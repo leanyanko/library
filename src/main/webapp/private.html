@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Public repository</title>
+    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/css/screen.css">
+    <title>Private repository</title>
+</head>
+
+
+<body>
+
+
+
+<div id="registration" class="simpletablestyle">
+    <h2>Add book to repository</h2>
+    <br/>
+
+    <div id="registerFormBookName">
+        <label>Name:</label>
+        <input type="text"
+               name="name"
+               id="nameField"
+               onblur="validate(this.value, 'registerFormBookName', 'shortString')"
+               onchange="validate(this.value, 'registerFormBookName', 'shortString')" />
+        <div class="alert alert-danger no-display" role="alert"></div>
+
+    </div>
+    </br>
+
+    <div id="registerFormBookAuthor">
+        <label>Author:</label>
+        <input type="text"
+               name="author"
+               id="authorField"
+               onblur="validate(this.value, 'registerFormBookAuthor', 'shortString')"
+               onchange="validate(this.value, 'registerFormBookAuthor', 'shortString')" />
+        <div class="alert alert-danger no-display" role="alert"></div>
+    </div>
+    </br>
+
+    <div id="registerFormBookDate">
+        <label>Date:</label>
+        <input type="text"
+               name="date"
+               id="dateField"
+               onblur="validate(this.value, 'registerFormBookDate', 'date')"
+               onchange="validate(this.value, 'registerFormBookDate', 'date')" />
+        <div class="alert alert-danger no-display" role="alert"></div>
+    </div>
+
+    </br>
+    <button id="submit" onclick="validateAll()">Register book</button>
+</div>
+</br>
+
+
+<h2>Books in public repository</h2>
+<div id="01"></div>
+<div id="toClone" class="col-xs-6 col-sm-3"></div>
+<br/>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6 col-sm-3">Name</div>
+        <div class="col-xs-6 col-sm-3">Author</div>
+        <div class="col-xs-6 col-sm-3">Date</div>
+        <div class="col-xs-6 col-sm-3"><button class="delete" onclick="delete()" enabled="false">Delete</button></div>
+    </div>
+
+    <div  class="row" id="attach">
+        <div id="listBooksNames" class="col-xs-6 col-sm-3"></div>
+        <div id="listBooksAuthor" class="col-xs-6 col-sm-3"></div>
+        <div id="listBooksDate" class="col-xs-6 col-sm-3"></div>
+        <div id="listBooksDelete" class="col-xs-6 col-sm-3"></div>
+
+    </div>
+</div>
+
+
+
+<script src="resources/lib/jquery-3.1.1.min.js"></script>
+<script src="resources/lib/jquery-ui.min.js"></script>
+<script src="resources/lib/bootstrap.min.js"></script>
+<script src="index.js"></script>
+
+</body>
+
+</html>

@@ -28,12 +28,12 @@ function validate(value, containerId, type) {
 
     switch (type) {
         case 'shortString':
-          //  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            var re = [^0-9]*;
-            if (!re.test(value)) {
+            var re = /[0-9<>()\[\]\\.,;:\s@\^\s@!#$%&?{}*]+/;
+            if (re.test(value)) {
                 $('#submit').onclick='validateAll()';
+                alert = $('#' + containerId + ' .alert');
                 alert.removeClass('no-display');
-                $('#' + containerId + ' .alert').text('Must not contain numbers');
+                alert.text('Must not contain numbers and symbols');
                 return false;
             }
             break;
