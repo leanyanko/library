@@ -9,6 +9,8 @@ import java.security.Principal;
 @XmlRootElement
 public class User implements Principal{
     private String id;
+
+
     private String name;
     private String userPassword;
     private String role;

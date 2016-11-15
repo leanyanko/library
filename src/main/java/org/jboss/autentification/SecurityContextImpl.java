@@ -1,5 +1,7 @@
 package org.jboss.autentification;
 
+import org.jboss.model.User;
+
 import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
 
@@ -31,4 +33,4 @@ public class SecurityContextImpl implements SecurityContext {
         return SecurityContext.BASIC_AUTH;
     }
 }
-}
+

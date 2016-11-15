@@ -1,10 +1,40 @@
+var userName;
+var userPassword;
+var request ;//= new XMLHttpRequest();
+
 var url = 'http://localhost:8081/library/rest/books/';
 $(document).ready(
     $( function() {
         $( "#dateField" ).datepicker();
         $.getJSON(url, onBookListSuccess);
+        userName = 'public';
+        userPassword = 'user';
+        request = new XMLHttpRequest();
     } )
 );
+
+var token_;
+
+function getToken(url, clientID, clientSecret) {
+    var key;
+    request.open("POST", url, true);
+    request.setRequestHeader("Content-type", "application/json");
+    request.send("grant_type=client_credentials&client_id="+clientID+"&"+"client_secret="+clientSecret);
+    // specify the credentials to receive the token on request
+
+    request.onreadystatechange = function () {
+        if (request.readyState == request.DONE) {
+            var response = request.responseText;
+            var obj = JSON.parse(response);
+            key = obj.access_token; //store the value of the accesstoken
+            token_ = key;
+            // store token in your global variable "token_" or you could simply return the value of the access token from the function
+        }
+    }
+
+    console.log(token_);
+}
+
 
 function validateForNull(value, containerId, msg) {
     var alert = $('#' + containerId + ' .alert');
@@ -42,7 +72,6 @@ function validate(value, containerId, type) {
             break;
     }
     return true;
-
 }
 
 function validateAll() {
@@ -92,7 +121,7 @@ function getById(i) {
 }
 
 function deleteB(i) {
-    var urlToDel = 'http://localhost:8081/library/rest/books/' + i;
+    var urlToDel = url + i;
     $.ajax({
         url: urlToDel,
         type: 'DELETE',
