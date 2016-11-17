@@ -41,20 +41,14 @@ public class SecurityFilter implements ContainerRequestFilter {
         String sessionToken =  context.getHeaderString("Authorization");
 
         User user = new User();
-        if (sessionToken == "userpassword")
+        if (sessionToken == "user:password")
             user.setRole("private");
         else
             user.setRole("all");
+
         context.setSecurityContext(new SecurityContextImpl(user));
 
-//        for (int i = 0; )
-//            if (securityContext.isUserInRole())
 
-        if (annotation != null) {
-            String[] roles = annotation.permissions();
-            if (roles != null && roles.length > 0)
-                log.info("role1:" + roles);
-        }
         // here we have access to headers:
 //        String authorizationHeader = context.getHeaderString("Authorization");
 //

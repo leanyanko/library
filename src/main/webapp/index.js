@@ -3,9 +3,15 @@ var userPassword;
 var request ;//= new XMLHttpRequest();
 
 var url = 'http://localhost:8081/library/rest/books/';
+
 $(document).ready(
     $( function() {
         $( "#dateField" ).datepicker();
+
+        $( "#target" ).select(function() {
+            alert( "Handler for .select() called." );
+        });
+
         $.getJSON(url, onBookListSuccess);
         userName = 'public';
         userPassword = 'user';
@@ -13,27 +19,57 @@ $(document).ready(
     } )
 );
 
-var token_;
 
-function getToken(url, clientID, clientSecret) {
-    var key;
-    request.open("POST", url, true);
-    request.setRequestHeader("Content-type", "application/json");
-    request.send("grant_type=client_credentials&client_id="+clientID+"&"+"client_secret="+clientSecret);
-    // specify the credentials to receive the token on request
-
-    request.onreadystatechange = function () {
-        if (request.readyState == request.DONE) {
-            var response = request.responseText;
-            var obj = JSON.parse(response);
-            key = obj.access_token; //store the value of the accesstoken
-            token_ = key;
-            // store token in your global variable "token_" or you could simply return the value of the access token from the function
-        }
-    }
-
-    console.log(token_);
+function autentification(user, password) {
+    var tok = user + ':' + password;
+   // var hash = Base64.encode(tok);
+    var hash = btoa(tok);
+    return "Basic " + hash;
 }
+
+function setAuthHeader(xhr){
+    var creds = userName + ':' + userPassword;
+    var basicScheme = btoa(creds);
+    var hashStr = "Basic "+basicScheme;
+    xhr.setRequestHeader('Authorization', basicScheme);
+}
+
+function action(value, i) {
+    console.log('value ' + value + ' i ' + i);
+    if (value == 'delete')
+        deleteB(i);
+}
+
+
+
+
+ function autorize() {
+     userName = $('#logInUser').val();
+     userPassword = $('#logInPassword').val();
+     console.log(userPassword);
+
+     // $.get('url',
+     //     beforeSend: setAuthHeader(xdr),
+     //     function (data) {
+     //         console.log(data);
+     //     });
+
+
+    $.ajax
+    ({
+        type: "GET",
+        url: url,
+        dataType: 'json',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', autentification(userName,userPassword));
+        },
+        data: '{"username": "' + userName + '", "password" : "' + userPassword + '"}',
+        success: function (){
+            console.log(data);
+        }
+    });
+ }
+
 
 
 function validateForNull(value, containerId, msg) {
@@ -165,12 +201,26 @@ function onBookListSuccess(bookList) {
             bookDate.append(d);
             listAll.append(bookDate);
 
-            var bookDelete = document.getElementById('toClone').cloneNode(false);
-            bookDelete.id = book.id + 'delete';
-            var del = "<button class=\"delete\" onclick=\"deleteB("+book.id+")\">Delete("+book.id+")</button>";
-            // bookDelete.append(del);
-            bookDelete.innerHTML = del;
-            listAll.append(bookDelete);
+            // var bookDelete = document.getElementById('toClone').cloneNode(false);
+            // bookDelete.id = book.id + 'delete';
+            // var del = "<button class=\"delete\" onclick=\"deleteB("+book.id+")\">Delete("+book.id+")</button>";
+            // // bookDelete.append(del);
+            // bookDelete.innerHTML = del;
+            // listAll.append(bookDelete);
+
+        var booAction = document.getElementById('toClone').cloneNode(false);
+        booAction.id = book.id + 'action';
+        var i = booAction.id;
+        var act = "<select name=\"actionForm\">" +
+            "<option value=\"delete\" selected>Delete</option>" +
+            "<option value=\"edit\">Edit</option>" +
+            "<option value=\"move\">Move</option>" +
+            "</select>" +
+            "<input type=\"submit\" value=\"Confirm\" onclick=\"action(" + $('#i').find(select)+ ".val, " + book.id + ")\">";
+        console.log(act);
+        // bookDelete.append(del);
+        booAction.innerHTML = act;
+        listAll.append(booAction);
         }
     );
 
