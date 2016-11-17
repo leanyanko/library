@@ -34,10 +34,35 @@ function setAuthHeader(xhr){
     xhr.setRequestHeader('Authorization', basicScheme);
 }
 
-function action(value, i) {
-    console.log('value ' + value + ' i ' + i);
+function action(div, i) {
+    var divid = div.id;
+    var value = $('#'+ divid +' > select').val();
+
     if (value == 'delete')
         deleteB(i);
+    else if (value == 'edit')
+        updateBook(divid, i);
+    else if(value == 'move')
+        moveBook(i);
+}
+
+function updateBook(divid, i) {
+
+    var book = booksById[i];
+
+    if(!book) {
+        return;
+    }
+
+    console.log(book.name);
+    var nameId = book.name + book.id;
+    console.log(nameId);
+    var divNameId = ($('#'+book.name + book.id)).html('<input type="text"' +
+                                                        'name="name"' +
+                                                        'id="' + nameId + 'edit' + '"' +
+                                                        'value="' + book.name + '"' +
+                                                        'onblur="validate(this.value, \'registerFormBookName\', \'shortString\')"' +
+                                                        'onchange="validate(this.value, \'registerFormBookName\', \'shortString\')" />');
 }
 
 
@@ -48,11 +73,6 @@ function action(value, i) {
      userPassword = $('#logInPassword').val();
      console.log(userPassword);
 
-     // $.get('url',
-     //     beforeSend: setAuthHeader(xdr),
-     //     function (data) {
-     //         console.log(data);
-     //     });
 
 
     $.ajax
@@ -144,16 +164,11 @@ function register(book) {
                 $.getJSON(url, onBookListSuccess);
                 document.getElementById('nameField').value='';
                 document.getElementById('authorField').value='';
-            //    document.getElementById('datepicker').value = null;
             },
             data: JSON.stringify(book),
             contentType: 'application/json; charset=utf-8'
         }
     )
-}
-
-function getById(i) {
-
 }
 
 function deleteB(i) {
@@ -168,7 +183,22 @@ function deleteB(i) {
     });
 }
 
+
+var booksArray = [];
+var booksById = {};
+
 function onBookListSuccess(bookList) {
+
+    booksArray = bookList;
+    booksById = {};
+    bookList.map(function (book) { booksById[book.id] = book});
+    console.log(booksArray);
+    console.log(booksById);
+
+    renderList(booksArray);
+}
+
+function renderList(bookList) {
     var listDiv = $('#listBooksNames');
     listDiv.empty();
 
@@ -186,18 +216,20 @@ function onBookListSuccess(bookList) {
 
     bookList.forEach(function (book, i) {
             var bookName = document.getElementById('toClone').cloneNode(false);
-            bookName.id = book.id + book.name;
+            bookName.id = book.name + book.id;
             bookName.append(book.name);
             listAll.append(bookName);
+            console.log(book.name);
+            console.log(bookName.id);
 
             var bookAuthor = document.getElementById('toClone').cloneNode(false);
-            bookAuthor.id = book.id + book.author;
+            bookAuthor.id = book.author + book.id;
             bookAuthor.append(book.author);
             listAll.append(bookAuthor);
 
             var bookDate = document.getElementById('toClone').cloneNode(false);
             var d = new Date(book.date).toLocaleDateString()
-            bookDate.id = book.id + d;
+            bookDate.id = 'date'+ book.id;
             bookDate.append(d);
             listAll.append(bookDate);
 
@@ -208,22 +240,20 @@ function onBookListSuccess(bookList) {
             // bookDelete.innerHTML = del;
             // listAll.append(bookDelete);
 
-        var booAction = document.getElementById('toClone').cloneNode(false);
-        booAction.id = book.id + 'action';
-        var i = booAction.id;
-        var act = "<select name=\"actionForm\">" +
-            "<option value=\"delete\" selected>Delete</option>" +
-            "<option value=\"edit\">Edit</option>" +
-            "<option value=\"move\">Move</option>" +
-            "</select>" +
-            "<input type=\"submit\" value=\"Confirm\" onclick=\"action(" + $('#i').find(select)+ ".val, " + book.id + ")\">";
-        console.log(act);
-        // bookDelete.append(del);
-        booAction.innerHTML = act;
-        listAll.append(booAction);
+            var booAction = document.getElementById('toClone').cloneNode(false);
+            booAction.id = 'action' + book.id;
+            var act = "<select name=\"actionForm\">" +
+                "<option value=\"delete\" selected>Delete</option>" +
+                "<option value=\"edit\">Edit</option>" +
+                "<option value=\"move\">Move</option>" +
+                "</select>" +
+                "<input type=\"submit\" value=\"Confirm\" onclick=\"action(" + booAction.id + ", " + book.id + ")\">";
+            console.log(act);
+            // bookDelete.append(del);
+            booAction.innerHTML = act;
+            listAll.append(booAction);
         }
     );
-
 }
 
 
