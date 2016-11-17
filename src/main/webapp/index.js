@@ -1,7 +1,5 @@
-var userName;
-var userPassword;
-var request ;//= new XMLHttpRequest();
-
+var booksArray = [];
+var booksById = {};
 var url = 'http://localhost:8081/library/rest/books/';
 
 $(document).ready(
@@ -13,26 +11,8 @@ $(document).ready(
         });
 
         $.getJSON(url, onBookListSuccess);
-        userName = 'public';
-        userPassword = 'user';
-        request = new XMLHttpRequest();
     } )
 );
-
-
-function autentification(user, password) {
-    var tok = user + ':' + password;
-   // var hash = Base64.encode(tok);
-    var hash = btoa(tok);
-    return "Basic " + hash;
-}
-
-function setAuthHeader(xhr){
-    var creds = userName + ':' + userPassword;
-    var basicScheme = btoa(creds);
-    var hashStr = "Basic "+basicScheme;
-    xhr.setRequestHeader('Authorization', basicScheme);
-}
 
 function action(div, i) {
     var divid = div.id;
@@ -46,7 +26,7 @@ function action(div, i) {
         moveBook(i);
 }
 
-function updateBook(divid, i) {
+function updateBook(divId, i) {
 
     var book = booksById[i];
 
@@ -183,10 +163,6 @@ function deleteB(i) {
     });
 }
 
-
-var booksArray = [];
-var booksById = {};
-
 function onBookListSuccess(bookList) {
 
     booksArray = bookList;
@@ -215,32 +191,25 @@ function renderList(bookList) {
     listAll.empty();
 
     bookList.forEach(function (book, i) {
-            var bookName = document.getElementById('toClone').cloneNode(false);
+        var bookName = $('#toClone').clone();
             bookName.id = book.name + book.id;
             bookName.append(book.name);
             listAll.append(bookName);
             console.log(book.name);
             console.log(bookName.id);
 
-            var bookAuthor = document.getElementById('toClone').cloneNode(false);
+        var bookAuthor = $('#toClone').clone();
             bookAuthor.id = book.author + book.id;
             bookAuthor.append(book.author);
             listAll.append(bookAuthor);
 
-            var bookDate = document.getElementById('toClone').cloneNode(false);
+        var bookDate = $('#toClone').clone();
             var d = new Date(book.date).toLocaleDateString()
             bookDate.id = 'date'+ book.id;
             bookDate.append(d);
             listAll.append(bookDate);
 
-            // var bookDelete = document.getElementById('toClone').cloneNode(false);
-            // bookDelete.id = book.id + 'delete';
-            // var del = "<button class=\"delete\" onclick=\"deleteB("+book.id+")\">Delete("+book.id+")</button>";
-            // // bookDelete.append(del);
-            // bookDelete.innerHTML = del;
-            // listAll.append(bookDelete);
-
-            var booAction = document.getElementById('toClone').cloneNode(false);
+        var booAction = $('#toClone').clone();
             booAction.id = 'action' + book.id;
             var act = "<select name=\"actionForm\">" +
                 "<option value=\"delete\" selected>Delete</option>" +
@@ -248,10 +217,9 @@ function renderList(bookList) {
                 "<option value=\"move\">Move</option>" +
                 "</select>" +
                 "<input type=\"submit\" value=\"Confirm\" onclick=\"action(" + booAction.id + ", " + book.id + ")\">";
-            console.log(act);
-            // bookDelete.append(del);
-            booAction.innerHTML = act;
-            listAll.append(booAction);
+
+        booAction.innerHTML = act;
+        listAll.append(booAction);
         }
     );
 }
