@@ -44,18 +44,6 @@ function date() {
 
 var actionForButton = 'add';
 function renderList(bookList) {
-    var listDiv = $('#listBooksNames');
-    listDiv.empty();
-
-    var listAu = $('#listBooksAuthor');
-    listAu.empty();
-
-    var listDates = $('#listBooksDate');
-    listDates.empty();
-
-    var liDel = $('#listBooksDelete');
-    liDel.empty();
-
     var listAll = $('#attach');
     listAll.empty();
 
@@ -66,7 +54,8 @@ function renderList(bookList) {
             bookName.attr('id', 'name_' + book.id);
 
             bigRaw.click(function () {
-                updateRequest(book.id);
+                actionForButton = 'save_' + book.id;
+                showEditForm(book.id);
             })
 
             bookName.append(book.name);
@@ -98,8 +87,8 @@ function actionChoise() {
     if (actionForButton === 'add') {
         createBook();
     }
-    else
-     //   console.log('lskjgjjjjjjjjj', parseInt(actionForButton.replace('save_', '')));
+    else {
         updateRequest(parseInt(actionForButton.replace('save_', '')));
+    }
 
 }

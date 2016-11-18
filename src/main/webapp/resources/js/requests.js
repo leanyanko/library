@@ -3,9 +3,10 @@
  */
 var url = 'http://localhost:8081/library/rest/books/';
 
-function updateRequest(book, id) {
-    showEditForm(id);
-    if (!validateFields()) return;
+function updateRequest(id) {
+    //showEditForm(id);
+    var book =validateFields();
+    if (book ==null) return;
     var urlToSave = url + id;
     console.log(urlToSave);
     $.ajax({
