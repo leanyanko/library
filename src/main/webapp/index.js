@@ -4,13 +4,14 @@ $(document).ready(
     $( function() {
         $( "#dateField" ).datepicker();
 
-        $( "#target" ).select(function() {
-            alert( "Handler for .select() called." );
-        });
-
         $.getJSON(url, onBookListSuccess);
+
     } )
 );
+
+function date() {
+    return (new Date()).toLocaleDateString();
+}
 
 function renderList(bookList) {
     var listDiv = $('#listBooksNames');
@@ -29,35 +30,36 @@ function renderList(bookList) {
     listAll.empty();
 
     bookList.forEach(function (book, i) {
+            var bigRaw = $('#toBigClone').clone();
+            bigRaw.attr('id', 'raw_' + book.id);
             var bookName = $('#toClone').clone();
-            bookName.id = book.name + book.id;
+            bookName.attr('id', 'name_' + book.id);
+
+            bigRaw.click(function () {
+                 updateRequest(book.id);
+            })
+
             bookName.append(book.name);
-            listAll.append(bookName);
-            console.log(book.name);
-            console.log(bookName.id);
+            bigRaw.append(bookName);
 
             var bookAuthor = $('#toClone').clone();
-            bookAuthor.id = book.author + book.id;
+            bookAuthor.attr('id', 'author_' + book.id);
             bookAuthor.append(book.author);
-            listAll.append(bookAuthor);
+            bigRaw.append(bookAuthor);
 
             var bookDate = $('#toClone').clone();
             var d = new Date(book.date).toLocaleDateString()
-            bookDate.id = 'date'+ book.id;
+            bookDate.attr('id', 'date_'+ book.id);
             bookDate.append(d);
-            listAll.append(bookDate);
+            bigRaw.append(bookDate);
 
-            var booAction = $('#toClone').clone();
-            booAction.id = 'action' + book.id;
-            var act = "<select name=\"actionForm\">" +
-                "<option value=\"delete\" selected>Delete</option>" +
-                "<option value=\"edit\">Edit</option>" +
-                "<option value=\"move\">Move</option>" +
-                "</select>" +
-                "<input type=\"submit\" value=\"Confirm\" onclick=\"action(" + booAction.id + ", " + book.id + ")\">";
+            var bookAction = $('#toClone').clone();
+            bookAction.attr('id', 'delete_' + book.id);
+            var act = "<button class=\"delete\" onclick=\"deleteRequest("+book.id+")\">Delete("+book.id+")</button>";
 
-            booAction.innerHTML = act;
-            listAll.append(booAction);
+            bookAction.append(act);
+            bigRaw.append(bookAction);
+            listAll.append(bigRaw);
         }
     );
 }
@@ -65,21 +67,11 @@ function renderList(bookList) {
 function showReg() {
     $('#registration').removeClass('no-display');
     $('#add').addClass('no-display');
+    $('#dateField').val(date());
+    $('#nameField').val('How to understand your cat');
+    $('#authorField').val('William Golding')
+    $('#submit').onclick='validateAll()';
 }
-
-
-function action(div, i) {
-    var divid = div.id;
-    var value = $('#'+ divid +' > select').val();
-
-    if (value == 'delete')
-        deleteRequest(i);
-    else if (value == 'edit')
-        updateRequest(divid, i);
-    else if(value == 'move')
-        moveRequest(i);
-}
-
 
 function validateForNull(value, containerId, msg) {
     var alert = $('#' + containerId + ' .alert');
@@ -94,14 +86,13 @@ function validateForNull(value, containerId, msg) {
         $('#submit').onclick = 'validateAll()';
         return true;
     }
-
 }
 
 function validate(value, containerId, type) {
     if(!  validateForNull(value, containerId, 'Field must not be empty'))
         return false;
     if (type == 'shortString') {
-        var re = /[0-9<>()\[\]\\.,;:\s@\^\s@!#$%&?{}*]+/;
+        var re = /[0-9<>()\[\]\\.,;:@\^@!#$%&?{}*]+/;
         if (re.test(value)) {
             $('#submit').onclick = 'validateAll()';
             alert = $('#' + containerId + ' .alert');
@@ -127,38 +118,66 @@ function validateAll() {
         book['name'] = name;
         book['author'] = author;
         book['date'] = date;
+        book['id'] = id++;
         createRequest(book);
     }
 }
 // REST API Requests
 // ====================================================================
-function updateRequest(divId, id) {
+function updateRequest(id) {
     var book = booksById[id];
     if(!book) {
         return;
     }
+    $('#addsuccess').addClass('no-display');
+    $('#registration').removeClass('no-display');
+    $('#registration > h2').text('Edit book');
+    $('#registration > button').text('Save');
+    $('#nameField').val(book.name);
+    $('#authorField').val(book.author);
+    $('#dateField').val((new Date(book.date)).toLocaleDateString());
+    book.name = $('#nameField').val();
+    book.author = $('#authorField').val();
+    book.date = (new Date($('#dateField').val())).toISOString();
 
-    console.log(book.name);
-    var nameId = book.name + book.id;
-    console.log(nameId);
-    var divNameId = ($('#'+book.name + book.id)).html('<input type="text"' +
-        'name="name"' +
-        'id="' + nameId + 'edit' + '"' +
-        'value="' + book.name + '"' +
-        'onblur="validate(this.value, \'registerFormBookName\', \'shortString\')"' +
-        'onchange="validate(this.value, \'registerFormBookName\', \'shortString\')" />');
+//    var fun = 'save(' + book + ', ' + book.id + ')';
+    $('#submit').click(function(g) {
+        console.log(g);
+        save(book, id);
+    });
+}
+
+function save(book, id) {
+    var urlToSave = url + id;
+    console.log(urlToSave);
+    $.ajax({
+        url : urlToSave,
+        type: 'PUT',
+        success: function () {
+            console.log('success: Put');
+            $('#addsuccess').removeClass('no-display');
+            $('#registration').addClass('no-display');
+
+            updateBooksById();
+            renderList(booksArray);
+        },
+        data: JSON.stringify(book),
+        contentType: 'application/json; charset=utf-8'
+    })
 }
 
 function createRequest(book) {
-
     $.ajax({
             url: url,
             type: 'POST',
             success: function () {
                 console.log('success: Post');
-                $.getJSON(url, onBookListSuccess);
-                document.getElementById('nameField').value='';
-                document.getElementById('authorField').value='';
+                console.log(book.id);
+                booksArray.push(book);
+                updateBooksById();
+                $('#addsuccess').removeClass('no-display');
+                $('#registration').addClass('no-display');
+                renderList(booksArray);
             },
             data: JSON.stringify(book),
             contentType: 'application/json; charset=utf-8'
@@ -191,6 +210,7 @@ function onBookListSuccess(bookList) {
 // ====================================================================
 var booksArray = [];
 var booksById = {};
+var id = 0;
 
 function createState(bookList){
     booksArray = bookList;
@@ -205,5 +225,6 @@ function updateBooksById() {
 function deleteBook(id) {
     booksArray = booksArray.filter(function (book) { return book.id !== id; });
     updateBooksById();
+    renderList(booksArray);
 }
 
