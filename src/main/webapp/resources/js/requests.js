@@ -4,7 +4,7 @@
 var url = 'http://localhost:8081/library/rest/books/';
 
 function updateRequest(id) {
-    //showEditForm(id);
+   // showEditForm(id);
     var book =validateFields();
     if (book ==null) return;
     var urlToSave = url + id;
@@ -14,10 +14,11 @@ function updateRequest(id) {
         type: 'PUT',
         success: function () {
             console.log('success: Put');
-            $('#addsuccess').removeClass('no-display');
-            $('#registration').addClass('no-display');
-            $('#addsuccess').hide(6000);
-            $('#add').removeClass('no-display');
+            hideInputs();
+            // $('#addsuccess').removeClass('no-display');
+            // $('#registration').addClass('no-display');
+            // $('#addsuccess').hide(6000);
+            // $('#add').removeClass('no-display');
             updateBooks(book)
         },
         data: JSON.stringify(book),
@@ -30,16 +31,17 @@ function createRequest(book) {
     $.ajax({
             url: url,
             type: 'POST',
-            success: function () {
+            success: function (response) {
                 console.log('success: Post');
-                console.log(book.id);
-                $('#addsuccess').removeClass('no-display');
-                $('#registration').addClass('no-display');
-                $('#addsuccess').hide(6000);
-                $('#add').removeClass('no-display');
+                hideInputs();
+                console.log(response);
+              //  book.id = response.id;
+                booksArray.push(book);
+                updateBooksById();
             },
             data: JSON.stringify(book),
-            contentType: 'application/json; charset=utf-8'
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json'
         }
     )
 }

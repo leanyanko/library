@@ -32,26 +32,13 @@ function validate(value, containerId, type) {
     return true;
 }
 
-// function validateAll() {
-//     var name = document.getElementById('nameField').value;
-//     var author = document.getElementById('authorField').value;
-//     var rawDate = document.getElementById('dateField').value;
-//     if (!validate(name, 'registerFormBookName', 'shortString')
-//         | !validate(author, 'registerFormBookAuthor', 'shortString')
-//         | !validate(rawDate, 'registerFormBookDate', 'date'))
-//         $('#submit').onclick='validateAll()';
-//     else {
-//         var date = (new Date(rawDate)).toISOString();
-//     }
-// }
-
 function bookObject(name, author, date) {
     var book = {};
     book['name'] = name;
     book['author'] = author;
     book['date'] = date;
     if (actionForButton == 'add') {
-        book['id'] = id++;
+        book['id'] = BookId++;
     }
     else {
         var bookId = actionForButton.replace('save_', '');

@@ -3,7 +3,7 @@
  */
 var booksArray = [];
 var booksById = {};
-var id = 0;
+var BookId = 0;
 
 function createState(bookList){
     booksArray = bookList;
@@ -13,6 +13,7 @@ function createState(bookList){
 function updateBooksById() {
     booksById = {};
     booksArray.map(function (book) { booksById[book.id] = book});
+
 }
 
 function deleteBook(id) {
@@ -32,10 +33,8 @@ function updateBooks(book) {
 }
 
 function createBook() {
-    showRegistrationForm();
     var book = validateFields();
-    booksArray.push(book);
-    updateBooksById();
-    createRequest(validateFields(book));
+
+    createRequest(book);
     renderList(booksArray);
 }
