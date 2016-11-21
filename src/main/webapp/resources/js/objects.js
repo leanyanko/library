@@ -64,10 +64,8 @@ var actionForButton = 'add';
 
 function renderList(bookList) {
     var listAll = $('#attach');
-//    var listAll = $('#cl');
 
     listAll.empty();
-//    listAll.append($('#cl'));
 
     var header = $('#toBigClone').clone();
     header.attr('id', 'header');
@@ -80,7 +78,6 @@ function renderList(bookList) {
 
     listAll.append(header);
 
-    var max = -1;
     var i = 0;
     bookList.forEach(function (book, i) {
             var bigRow = $('#toBigClone').clone();
@@ -126,22 +123,16 @@ function renderList(bookList) {
             bigRow.append(bookAction);
             listAll.append(bigRow);
 
-        if (max < book.id)
-            max = book.id;
-       // BookId = book.id;
         }
     );
-    console.log('BookId ' + BookId);
-    if (max + 1 > BookId)
-        BookId = max + 1;
-    console.log('max ' + max);
-//    console.log(BookId);
+
 }
 
 function actionChoise() {
     if (actionForButton === 'add') {
-     //   showRegistrationForm();
-        createBook();
+        var book = validateFields();
+        createRequest(book);
+//        createBook();
     }
     else {
         updateRequest(parseInt(actionForButton.replace('save_', '')));

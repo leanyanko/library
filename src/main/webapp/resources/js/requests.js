@@ -28,17 +28,22 @@ function updateRequest(id) {
 
 function createRequest(book) {
     if (book == null) return;
+
     $.ajax({
-            url: url,
-            type: 'POST',
-            success: function (response) {
-                console.log('success: Post');
-                hideInputs();
-                console.log(response);
-              //  book.id = response.id;
-                booksArray.push(book);
-                updateBooksById();
-            },
+        url: url,
+        type: 'POST',
+        success: function (response) {
+            console.log('success: Post');
+            createBook(book, response.id);
+            // hideInputs();
+            // book['id'] = response.id;
+            // booksArray.push(book);
+            // updateBooksById();
+            // renderList(booksArray);
+        },
+        fail: function (e) {
+            console.log(e);
+        },
             data: JSON.stringify(book),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json'

@@ -37,13 +37,13 @@ function bookObject(name, author, date) {
     book['name'] = name;
     book['author'] = author;
     book['date'] = date;
-    if (actionForButton == 'add') {
-        book['id'] = BookId++;
-    }
-    else {
-        var bookId = actionForButton.replace('save_', '');
-        book['id'] = parseInt(bookId);
-    }
+    // if (actionForButton == 'add') {
+    //     book['id'] = BookId++;
+    // }
+    // else {
+    //     var bookId = actionForButton.replace('save_', '');
+    //     book['id'] = parseInt(bookId);
+    // }
     return book;
 }
 
