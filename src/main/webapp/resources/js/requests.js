@@ -14,12 +14,7 @@ function updateRequest(id) {
         type: 'PUT',
         success: function () {
             console.log('success: Put');
-            hideInputs();
-            // $('#addsuccess').removeClass('no-display');
-            // $('#registration').addClass('no-display');
-            // $('#addsuccess').hide(6000);
-            // $('#add').removeClass('no-display');
-            updateBooks(book)
+            updateBooks(book, id)
         },
         data: JSON.stringify(book),
         contentType: 'application/json; charset=utf-8'
@@ -35,11 +30,6 @@ function createRequest(book) {
         success: function (response) {
             console.log('success: Post');
             createBook(book, response.id);
-            // hideInputs();
-            // book['id'] = response.id;
-            // booksArray.push(book);
-            // updateBooksById();
-            // renderList(booksArray);
         },
         fail: function (e) {
             console.log(e);

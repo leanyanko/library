@@ -22,11 +22,13 @@ function deleteBook(id) {
     renderList(booksArray);
 }
 
-function updateBooks(book) {
+function updateBooks(book, id) {
+    hideInputs();
     booksArray.forEach(function (element, i) {
-        if (element.id === book.id)
+        if (element.id === id)
             booksArray[i] = book;
     });
+    book['id'] = id;
     updateBooksById();
     renderList(booksArray);
 }
@@ -37,8 +39,4 @@ function createBook(book, id) {
     booksArray.push(book);
     updateBooksById();
     renderList(booksArray);
-    // var book = validateFields();
-    // createRequest(book);
-    // console.log('here?');
-    // renderList(booksArray);
 }
