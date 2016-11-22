@@ -28,8 +28,6 @@ function createRequest(book) {
         success: function (response) {
             console.log('success: Post');
             createBook(book, response.id, response.private);
-            console.log('isPrivate: ' + response.private);
-            console.log('response:' + response);
         },
         fail: function (e) {
             console.log(e);

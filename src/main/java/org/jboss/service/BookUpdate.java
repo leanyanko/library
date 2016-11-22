@@ -30,6 +30,7 @@ public class BookUpdate {
             upBook.setAuthor(book.getAuthor());
         if (book.getDate() != null)
             upBook.setDate(book.getDate());
+        upBook.setPrivate(book.isPrivate());
         bookEvent.fire(allbooks.getById(id));
     }
 }

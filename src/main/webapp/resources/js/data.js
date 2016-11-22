@@ -6,6 +6,8 @@ var booksById = {};
 
 function createState(bookList){
     booksArray = bookList;
+    //console.log('state'+booksArray.length);
+    changeList('all');
     updateBooksById();
 }
 

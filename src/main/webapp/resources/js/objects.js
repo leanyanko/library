@@ -52,7 +52,6 @@ $(document).ready(
         $( "#dateField" ).datepicker();
 
         $.getJSON(url, onBookListSuccess);
-        renderList('all');
 
     } )
 );
@@ -65,6 +64,7 @@ var actionForButton = 'add';
 
 function renderList(type) {
     var bookList = booksArray;
+
     var listAll = $('#attach');
 
     listAll.empty();
@@ -76,15 +76,16 @@ function renderList(type) {
     header.append($('<div class=\"col-sm-3\">Name</div>'));
     header.append($('<div class="col-sm-3">Author</div>'));
     header.append($('<div class="col-sm-3">Date</div>'));
-    header.append($('<div class="col-sm-3"><button class="btn btn-default delete">Delete</button></div>'));
+    header.append($('<div class="col-sm-3">Delete</div>'));
 
     listAll.append(header);
 
     var i = 0;
+    console.log('size ' + bookList.length);
+
     bookList.forEach(function (book, i) {
+
         if (type === 'public' && !book.private || type === 'private' && book.private || type === 'all') {
-            if (type === 'private')
-                console.log('privatelist, ' + book.name + ' private? ' + book.private);
 
             var bigRow = $('#toBigClone').clone();
             bigRow.attr('id', 'raw_' + book.id);
@@ -118,7 +119,7 @@ function renderList(type) {
 
             var bookAction = $('#toClone').clone();
             bookAction.attr('id', 'delete_' + book.id);
-            var deleteButton = $("<button class=\"delete\">Delete(" + book.id + ")</button>");
+            var deleteButton = $("<button class=\"btn btn-default delete\">Delete</button>");
 
             deleteButton.click(function (e) {
                 e.stopPropagation();
@@ -132,7 +133,7 @@ function renderList(type) {
 
         }
     );
-
+    //console.log('rendered ' + type);
 }
 
 function actionChoise() {

@@ -215,15 +215,16 @@ input {
 }
 
 .blue {
-  background-color: black;
+  background-color: #EAECEE;
 }
 
 .pink {
-  background-color: pink;
+  background-color: #f2dede;
 }
 
 .row {
   width: 100%;
+  min-height: 2.0em;
 }
 
 .tablehead {

@@ -38,7 +38,7 @@ public class BookDAO {
     public List<Book> namePublicOrder() {
         List<Book> list = new ArrayList<>();
         for (Book b: allbooks.values()) {
-            if (!b.isPrivate())
+          //  if (!b.isPrivate())
                 list.add(b);
         }
         return list;
