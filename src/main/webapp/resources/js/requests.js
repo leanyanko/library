@@ -3,9 +3,7 @@
  */
 var url = 'http://localhost:8081/library/rest/books/';
 
-function updateRequest(id) {
-   // showEditForm(id);
-    var book =validateFields();
+function updateRequest(book, id) {
     if (book ==null) return;
     var urlToSave = url + id;
     console.log(urlToSave);
@@ -14,7 +12,7 @@ function updateRequest(id) {
         type: 'PUT',
         success: function () {
             console.log('success: Put');
-            updateBooks(book, id)
+            updateBooks(book, id, book.private)
         },
         data: JSON.stringify(book),
         contentType: 'application/json; charset=utf-8'
@@ -29,7 +27,9 @@ function createRequest(book) {
         type: 'POST',
         success: function (response) {
             console.log('success: Post');
-            createBook(book, response.id);
+            createBook(book, response.id, response.private);
+            console.log('isPrivate: ' + response.private);
+            console.log('response:' + response);
         },
         fail: function (e) {
             console.log(e);
@@ -55,5 +55,5 @@ function deleteRequest(id) {
 
 function onBookListSuccess(bookList) {
     createState(bookList);
-    renderList(booksArray);
+    //renderList('all');
 }

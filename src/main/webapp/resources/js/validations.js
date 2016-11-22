@@ -2,18 +2,15 @@
  * Created by Anna on 18/11/2016.
  */
 function validateForNull(value, containerId, msg) {
-    var alert = $('#' + containerId + ' .alert');
-    alert.text(msg)
+    var alertVar = $('#' + containerId);
+    alertVar.text(msg)
     if (value == '') {
-        $('#submit').onclick='validateAll()';
-        alert.removeClass('no-display');
+        alertVar.removeClass('no-display');
         return false;
     }
-    else {
-        alert.addClass('no-display');
-        $('#submit').onclick = 'validateAll()';
-        return true;
-    }
+    alertVar.addClass('no-display');
+    return true;
+
 }
 
 function validate(value, containerId, type) {
@@ -22,42 +19,40 @@ function validate(value, containerId, type) {
     if (type == 'shortString') {
         var re = /[0-9<>()\[\]\\.,;:@\^@!#$%&?{}*]+/;
         if (re.test(value)) {
-            $('#submit').onclick = 'validateAll()';
-            alert = $('#' + containerId + ' .alert');
-            alert.removeClass('no-display');
-            alert.text('Must not contain numbers and symbols');
+            console.log(value);
+            var alertField = $('#' + containerId);
+
+            console.log(containerId);
+            alertField.removeClass('no-display');
+            alertField.text('Must not contain numbers and symbols');
             return false;
         }
     }
     return true;
 }
 
-function bookObject(name, author, date) {
-    var book = {};
-    book['name'] = name;
-    book['author'] = author;
-    book['date'] = date;
-    // if (actionForButton == 'add') {
-    //     book['id'] = BookId++;
-    // }
-    // else {
-    //     var bookId = actionForButton.replace('save_', '');
-    //     book['id'] = parseInt(bookId);
-    // }
-    return book;
-}
-
 function validateFields() {
     var name = $('#nameField').val();
     var author = $('#authorField').val();
     var rawDate = $('#dateField').val();
+    var private = $('#private').prop('checked');
 
-    if (!validate(name, 'registerFormBookName', 'shortString')
-        | !validate(author, 'registerFormBookAuthor', 'shortString')
-        | !validate(rawDate, 'registerFormBookDate', 'date'))
+    if (!validate(name, 'nameAlert', 'shortString')
+        | !validate(author, 'authorAlert', 'shortString')
+        | !validate(rawDate, 'dateAlert', 'date'))
         return null;
 
     var date = (new Date(rawDate)).toISOString();
 
-    return bookObject(name, author, date);
+    return bookObject(name, author, date, private);
+}
+
+
+function bookObject(name, author, date, private) {
+    var book = {};
+    book['name'] = name;
+    book['author'] = author;
+    book['date'] = date;
+    book['private'] = private;
+    return book;
 }

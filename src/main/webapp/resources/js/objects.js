@@ -10,7 +10,7 @@ function showEditForm(id) {
     hideAddButton();
     $('#registration').removeClass('no-display');
     $('#registration > h2').text('Edit book');
-    $('#submit').prop('value', 'Save');
+    $('#submitAction').prop('value', 'Save');
     $('#nameField').val(book.name);
     $('#authorField').val(book.author);
     $('#dateField').val((new Date(book.date)).toLocaleDateString());
@@ -31,15 +31,15 @@ function hideInputs() {
     $('#addsuccess').removeClass('no-display');
     $('#registration').addClass('no-display');
     $('#addsuccess').hide(6000);
-   // hideAddButton();
     $('#add').removeClass('no-display');
 }
 
 function showRegistrationForm() {
-    $('#submit').attr('value','Add');
+    $('#submitAction').attr('value','Add');
     $('#registration > h2').text('Add new book');
 
     $('#registration').removeClass('no-display');
+
     $('#add').addClass('no-display');
     $('#dateField').val(date());
     $('#nameField').val('How to understand your cat');
@@ -52,6 +52,7 @@ $(document).ready(
         $( "#dateField" ).datepicker();
 
         $.getJSON(url, onBookListSuccess);
+        renderList('all');
 
     } )
 );
@@ -62,7 +63,8 @@ function date() {
 
 var actionForButton = 'add';
 
-function renderList(bookList) {
+function renderList(type) {
+    var bookList = booksArray;
     var listAll = $('#attach');
 
     listAll.empty();
@@ -74,14 +76,19 @@ function renderList(bookList) {
     header.append($('<div class=\"col-sm-3\">Name</div>'));
     header.append($('<div class="col-sm-3">Author</div>'));
     header.append($('<div class="col-sm-3">Date</div>'));
-    header.append($('<div class="col-sm-3"><button class="delete">Delete</button></div>'));
+    header.append($('<div class="col-sm-3"><button class="btn btn-default delete">Delete</button></div>'));
 
     listAll.append(header);
 
     var i = 0;
     bookList.forEach(function (book, i) {
+        if (type === 'public' && !book.private || type === 'private' && book.private || type === 'all') {
+            if (type === 'private')
+                console.log('privatelist, ' + book.name + ' private? ' + book.private);
+
             var bigRow = $('#toBigClone').clone();
             bigRow.attr('id', 'raw_' + book.id);
+
             var bookName = $('#toClone').clone();
             bookName.attr('id', 'name_' + book.id);
 
@@ -90,10 +97,10 @@ function renderList(bookList) {
                 showEditForm(book.id);
             });
 
-        if (i % 2 === 0)
-            bigRow.addClass('blue');
-        else
-            bigRow.addClass('pink');
+            if (i % 2 === 0)
+                bigRow.addClass('blue');
+            else
+                bigRow.addClass('pink');
 
             bookName.append(book.name);
             bigRow.append(bookName);
@@ -105,16 +112,15 @@ function renderList(bookList) {
 
             var bookDate = $('#toClone').clone();
             var d = new Date(book.date).toLocaleDateString()
-            bookDate.attr('id', 'date_'+ book.id);
+            bookDate.attr('id', 'date_' + book.id);
             bookDate.append(d);
             bigRow.append(bookDate);
 
             var bookAction = $('#toClone').clone();
             bookAction.attr('id', 'delete_' + book.id);
-            var deleteButton = $("<button class=\"delete\">Delete("+book.id+")</button>");
+            var deleteButton = $("<button class=\"delete\">Delete(" + book.id + ")</button>");
 
-            deleteButton.click(function (e){
-                console.log('deleteRequest');
+            deleteButton.click(function (e) {
                 e.stopPropagation();
                 deleteRequest(book.id);
                 hideInputs();
@@ -122,6 +128,7 @@ function renderList(bookList) {
             bookAction.append(deleteButton);
             bigRow.append(bookAction);
             listAll.append(bigRow);
+        }
 
         }
     );
@@ -129,13 +136,32 @@ function renderList(bookList) {
 }
 
 function actionChoise() {
+    var book = validateFields();
     if (actionForButton === 'add') {
-        var book = validateFields();
         createRequest(book);
-//        createBook();
     }
     else {
-        updateRequest(parseInt(actionForButton.replace('save_', '')));
+        var id = actionForButton.replace('save_', '');
+        updateRequest(book, parseInt(id) );
     }
+}
 
+function changeList(type) {
+    if (type === 'public') {
+        $('changeAll').removeClass('active');
+        $('changePrivate').removeClass('active');
+        $('changePublic').addClass('active');
+    }
+    else if (type === 'private') {
+        $('changeAll').removeClass('active');
+        $('changePrivate').addClass('active');
+        $('changePublic').removeClass('active');
+    }
+    else if (type === 'all') {
+        $('changeAll').addClass('active');
+        $('changePrivate').removeClass('active');
+        $('changePublic').removeClass('active');
+    }
+    console.log(type);
+    renderList(type);
 }
