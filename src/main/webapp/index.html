@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Public repository</title>
+        <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/css/screen.css">
+    </head>
+
+
+    <body>
+        <br/>
+        <div class="alertsGreen">
+            <div id="addsuccess" class="alert alert-success no-display" role="alert">Book successfully added</div>
+        </div>
+        <div id="all">
+
+
+            <div class="fullreg">
+            <div id="add" class="add registration">
+                <input type="submit" class="btn btn-default" onclick="showRegistrationForm()" value="Add book"/>
+            </div>
+
+                <div id="registration" class="registration no-display">
+
+                    <h2>Add book to repository</h2>
+                    <br/>
+
+                    <div id="registerFormBookName">
+                        <label>Name:</label>
+                        <input type="text"
+                               name="name"
+                               id="nameField"
+                               value="book"
+                               onblur="validate(this.value, 'nameAlert', 'shortString')"
+                               onchange="validate(this.value, 'nameAlert', 'shortString')" />
+                        <div id="nameAlert" class="alert alert-danger no-display" role="alert"></div>
+                    </br>
+                        </br>
+                    <div id="registerFormBookAuthor">
+                        <label>Author:</label>
+                        <input type="text"
+                               name="author"
+                               id="authorField"
+                               value="author"
+                               onblur="validate(this.value, 'authorAlert', 'shortString')"
+                               onchange="validate(this.value, 'authorAlert', 'shortString')" />
+                        <div id="authorAlert" class="alert alert-danger no-display" role="alert"></div>
+                    </div>
+                        </br>
+                    <div id="registerFormBookDate">
+                        <label>Date:</label>
+                        <input type="text"
+                               name="date"
+                               id="dateField"
+                               onblur="validate(this.value, 'dateAlert', 'date')"
+                               onchange="validate(this.value, 'dateAlert', 'date')" />
+                        <div id="dateAlert" class="alert alert-danger no-display" role="alert"></div>
+                    </div>
+                        </br>
+                        <label class="checkbox-inline"><input type="checkbox" id="private" unchecked>Private </label>
+                    </br>
+                        </br>
+                    <input id="submitAction" class="btn btn-default" type="button" value="" onclick="actionChoise()"> </input>
+                </div>
+            </div>
+                </div>
+
+            <div class="listbook">
+                <div class="container-fluid list" >
+                    <ul class="nav nav-pills">
+                        <li role="presentation" id="changeAll"  onclick="changeList('all')"><a href="#">All</a></li>
+                        <li role="presentation" id="changePublic" onclick="changeList('public')"><a href="#">Public</a></li>
+                        <li role="presentation" id="changePrivate" onclick="changeList('private')"><a href="#">Private</a></li>
+                    </ul>
+
+                    <br/>
+
+                    <div  class="" id="attach">
+                        <div id="listBooksNames" class="col-sm-3"></div>
+                        <div id="listBooksAuthor" class="col-sm-3"></div>
+                        <div id="listBooksDate" class="col-sm-3"></div>
+                        <div id="listBooksDelete" class="col-sm-3"></div>
+
+                    </div>
+
+
+                    <div id="toBigClone" class="row table-hover"></div>
+                    <div id="toClone" class="col-sm-3"></div>
+                </div>
+
+            </div>
+
+        </div>
+            <script src="resources/lib/jquery-3.1.1.min.js"></script>
+            <script src="resources/lib/jquery-ui.min.js"></script>
+            <script src="resources/lib/bootstrap.min.js"></script>
+        <script src="resources/js/data.js"></script>
+        <script src="resources/js/objects.js"></script>
+        <script src="resources/js/requests.js"></script>
+        <script src="resources/js/validations.js"></script>
+    </body>
+
+</html>
