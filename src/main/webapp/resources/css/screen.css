@@ -1,10 +1,10 @@
 body {
   min-width: 855px;
   margin: auto;
-  padding-left: 10%;
-  background-color: #fff;
-  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-  font-size: 2.0em;
+  padding-left: 2%;
+  background-color: rgba(255, 95, 34, 0.03);
+  font-family: "Helvetica";
+  font-size: 1.5em;
   color:#363636;
 }
 
@@ -184,7 +184,7 @@ input {
 }
 
 .delete {
-  font-size: 0.5em;
+  font-size: 0.9em;
 }
 
 .alerts {
@@ -197,11 +197,17 @@ input {
 
 .list {
   clear:both;
+  background-color: #EAECEE;
+  padding-top: 7%;
+  margin-left: 0%;
+
 }
+
 
 .listbook {
   float: left;
   width:70%;
+
 }
 
 .fullreg {
@@ -224,7 +230,10 @@ input {
 
 .row {
   width: 100%;
-  min-height: 2.0em;
+  min-height: 2.1em;
+  margin-left:0%;
+  margin-right:2%;
+@include vertical-align;
 }
 
 .tablehead {
@@ -235,13 +244,9 @@ input {
   min-width: 895px;
 }
 
-
-
-
-
-
-
-
+.alertsGreen {
+  height: 60px;
+}
 
 
 

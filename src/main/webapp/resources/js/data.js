@@ -3,11 +3,10 @@
  */
 var booksArray = [];
 var booksById = {};
-
+var tab = 'all';
 function createState(bookList){
     booksArray = bookList;
-    //console.log('state'+booksArray.length);
-    changeList('all');
+    changeList(tab);
     updateBooksById();
 }
 
@@ -20,7 +19,7 @@ function updateBooksById() {
 function deleteBook(id) {
     booksArray = booksArray.filter(function (book) { return book.id !== id; });
     updateBooksById();
-    renderList('all');
+    changeList(tab);
 }
 
 function updateBooks(book, id, private) {
@@ -32,7 +31,7 @@ function updateBooks(book, id, private) {
     book['id'] = id;
     book['private'] = private;
     updateBooksById();
-    renderList('all');
+    changeList(tab);
 }
 
 function createBook(book, id, private) {
@@ -41,5 +40,5 @@ function createBook(book, id, private) {
     book['isPrivate'] = private;
     booksArray.push(book);
     updateBooksById();
-    renderList('all');
+    changeList(tab);
 }

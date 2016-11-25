@@ -12,6 +12,9 @@
 
     <body>
         <br/>
+        <div class="alertsGreen">
+            <div id="addsuccess" class="alert alert-success no-display" role="alert">Book successfully added</div>
+        </div>
         <div id="all">
 
 
@@ -35,7 +38,7 @@
                                onchange="validate(this.value, 'nameAlert', 'shortString')" />
                         <div id="nameAlert" class="alert alert-danger no-display" role="alert"></div>
                     </br>
-
+                        </br>
                     <div id="registerFormBookAuthor">
                         <label>Author:</label>
                         <input type="text"
@@ -46,6 +49,7 @@
                                onchange="validate(this.value, 'authorAlert', 'shortString')" />
                         <div id="authorAlert" class="alert alert-danger no-display" role="alert"></div>
                     </div>
+                        </br>
                     <div id="registerFormBookDate">
                         <label>Date:</label>
                         <input type="text"
@@ -55,11 +59,13 @@
                                onchange="validate(this.value, 'dateAlert', 'date')" />
                         <div id="dateAlert" class="alert alert-danger no-display" role="alert"></div>
                     </div>
-                        <label>Private </label><input type="checkbox" id="private" unchecked/>
+                        </br>
+                        <label class="checkbox-inline"><input type="checkbox" id="private" unchecked>Private </label>
                     </br>
+                        </br>
                     <input id="submitAction" class="btn btn-default" type="button" value="" onclick="actionChoise()"> </input>
                 </div>
-            </div><div id="addsuccess" class="alert alert-success no-display" role="alert">Book successfully added</div>
+            </div>
                 </div>
 
             <div class="listbook">
@@ -81,7 +87,7 @@
                     </div>
 
 
-                    <div id="toBigClone" class="row"></div>
+                    <div id="toBigClone" class="row table-hover"></div>
                     <div id="toClone" class="col-sm-3"></div>
                 </div>
 

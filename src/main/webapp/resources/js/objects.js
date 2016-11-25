@@ -28,9 +28,10 @@ function hideAddButton() {
 }
 
 function hideInputs() {
-    $('#addsuccess').removeClass('no-display');
+    $('#addsuccess').
+    $('#addsuccess').show();
     $('#registration').addClass('no-display');
-    $('#addsuccess').hide(6000);
+    $('#addsuccess').hide(3000);
     $('#add').removeClass('no-display');
 }
 
@@ -80,7 +81,7 @@ function renderList(type) {
 
     listAll.append(header);
 
-    var i = 0;
+    var j = 0;
     console.log('size ' + bookList.length);
 
     bookList.forEach(function (book, i) {
@@ -98,11 +99,11 @@ function renderList(type) {
                 showEditForm(book.id);
             });
 
-            if (i % 2 === 0)
+            if (j % 2 === 0)
                 bigRow.addClass('blue');
             else
                 bigRow.addClass('pink');
-
+            j++;
             bookName.append(book.name);
             bigRow.append(bookName);
 
@@ -133,7 +134,6 @@ function renderList(type) {
 
         }
     );
-    //console.log('rendered ' + type);
 }
 
 function actionChoise() {
@@ -148,20 +148,21 @@ function actionChoise() {
 }
 
 function changeList(type) {
+    tab = type;
     if (type === 'public') {
-        $('changeAll').removeClass('active');
-        $('changePrivate').removeClass('active');
-        $('changePublic').addClass('active');
+        $('#changeAll').removeClass('active');
+        $('#changePrivate').removeClass('active');
+        $('#changePublic').addClass('active');
     }
     else if (type === 'private') {
-        $('changeAll').removeClass('active');
-        $('changePrivate').addClass('active');
-        $('changePublic').removeClass('active');
+        $('#changeAll').removeClass('active');
+        $('#changePrivate').addClass('active');
+        $('#changePublic').removeClass('active');
     }
     else if (type === 'all') {
-        $('changeAll').addClass('active');
-        $('changePrivate').removeClass('active');
-        $('changePublic').removeClass('active');
+        $('#changeAll').addClass('active');
+        $('#changePrivate').removeClass('active');
+        $('#changePublic').removeClass('active');
     }
     console.log(type);
     renderList(type);
