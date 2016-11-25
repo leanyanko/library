@@ -28,7 +28,7 @@ function hideAddButton() {
 }
 
 function hideInputs() {
-    $('#addsuccess').
+  //  $('#addsuccess').
     $('#addsuccess').show();
     $('#registration').addClass('no-display');
     $('#addsuccess').hide(3000);
