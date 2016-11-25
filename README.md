@@ -24,7 +24,7 @@ Download and extract the [latest pre-built release](https://github.com/meinou/li
 
 Install the dependencies and devDependencies and start the server.
 
-in pom-xml change port number where web interface of the server can be found
+in pom-xml change port number where web interface of the server can be found if you want to run frontend on server.
 
 ```
 <port>9991</port>
